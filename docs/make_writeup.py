@@ -94,7 +94,7 @@ story = [
       "the files changed <b>by commit i−1</b>. The paper used commit <i>i</i>'s own diff. We shift features by one."),
     B("<b>Richer features.</b> Files are mapped to a source area (src/main/java, src/test, site, …, by longest "
       "prefix) and a type (by real extension). Features: per-area and per-type counts, log #files, log lines "
-      "added/deleted, flags <i>touches src/main</i>, <i>only tests/docs</i>, <i>touches BUILD/.bzl</i> — 34 in all."),
+      "added/deleted, flags <i>touches src/main</i>, <i>only tests/docs</i>, <i>touches BUILD/.bzl</i> — 32 in all."),
     B("<b>Models.</b> Ridge regression, random forest and gradient boosting (Huber loss) on <b>log CPU time</b>; "
       f"selected on validation RMSLE ({sel.replace('_', ' ')} won); final model retrained on train+validation "
       "and evaluated once on test. The cold-cache first build (44.9 s) is excluded from training."),
