@@ -22,9 +22,10 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, os.path.dirname(__file__))
-from features import area_of, commit_features, load_dataset, type_of  # noqa: E402
+from features import SIZE_STATS, area_of, commit_features, load_dataset, type_of  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
 
 def bucket(ms):
@@ -45,6 +46,22 @@ def files_from_commit(repo, commit):
         add += int(a) if a != "-" else 0
         dele += int(d) if d != "-" else 0
     return files, add, dele
+
+
+def size_features_from_commit(repo, commit):
+    """log1p size/dependency features of the files a commit changes (both states)."""
+    from size_features import aggregate, blob_info, changed_blobs  # noqa: E402
+    from pathlib import PurePosixPath
+    files = changed_blobs(repo, f"{commit}^", commit)
+    blobs = {}
+    for path, old, new in files:
+        blobs[old] = blobs[new] = PurePosixPath(path).suffix.lower()
+    info = blob_info(repo, blobs)
+    out = {}
+    for which in ("before", "after"):
+        agg = aggregate(files, info, which)
+        out.update({f"log_{which}_{c}": float(np.log1p(agg[c])) for c in SIZE_STATS})
+    return out
 
 
 def main():
@@ -78,6 +95,12 @@ def main():
         else:
             ap.error("give --files, --commit or --row")
         feats = commit_features(files, add, dele)
+        if args.commit:
+            feats.update(size_features_from_commit(args.repo, args.commit))
+        if not all(c in feats for c in cols):
+            # file sizes unknown without a repository: use the model trained on diff features only
+            model, cols = bundle["fallback_model"], bundle["fallback_columns"]
+            print("(no repository given, so file sizes are unknown: using the diff-features-only model)")
         x = np.array([[feats[c] for c in cols]], dtype=float)
 
     pred = float(np.exp(model.predict(x)[0]))
