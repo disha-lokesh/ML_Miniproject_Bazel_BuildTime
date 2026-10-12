@@ -11,9 +11,9 @@ What was checked before submission, how, and the result. Re-run the automated pa
 | Code in a **private** GitHub repository, shared with faculty/TAs | **Not met yet** | the repository page loads without login (public); switch to private and add collaborators |
 | README with setup and run instructions | Met | `README.md`: setup, training, demo, data rebuild, docs rebuild |
 | PDF write-up: problem, dataset, approach, implementation, conclusions | Met | `docs/writeup.pdf`, sections 1 to 6; 2 pages (test `test_writeup_is_two_pages`) |
-| Slide deck for the review | Met | 14-slide presentation, every number taken from `results/metrics.json`; exported to `docs/slides.pdf` |
+| Slide deck for the review | Met | 13-slide presentation, every number taken from `results/metrics.json`; exported to `docs/slides.pdf` |
 | Live demonstration of working code | Met | `src/predict.py`, 4 modes; tests `Demo.*` |
-| Individual contribution visible | Met | git authorship per commit; "Who did what" slide |
+| Individual contribution visible | Met | git authorship per commit |
 
 ## 2. Data provenance
 
@@ -69,4 +69,4 @@ explicit 55-way one-hot instead of TensorFlow's 1,000-bucket hash.
 - Make the repository private and share it with faculty and TAs (guideline requirement).
 - The size-feature gain is shown by paired cross-validation; on the 100-build test split the final model
   is slightly behind the diff-only model (5,143 vs 4,954 ms RMSE), within fold-to-fold noise.
-- Fill in names and SRNs on the write-up, the title slide and the contributions slide (left blank on purpose).
+- Fill in names and SRNs on the write-up and the title slide (left blank on purpose).
