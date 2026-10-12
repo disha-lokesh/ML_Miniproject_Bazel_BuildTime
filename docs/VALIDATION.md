@@ -67,7 +67,6 @@ explicit 55-way one-hot instead of TensorFlow's 1,000-bucket hash.
 ## 5. Open items
 
 - Make the repository private and share it with faculty and TAs (guideline requirement).
-- The submission deadline (10 Oct 2026, 23:59) has passed; confirm a late submission with the faculty.
 - The size-feature gain is shown by paired cross-validation; on the 100-build test split the final model
   is slightly behind the diff-only model (5,143 vs 4,954 ms RMSE), within fold-to-fold noise.
 - Fill in names and SRNs on the write-up, the title slide and the contributions slide (left blank on purpose).
