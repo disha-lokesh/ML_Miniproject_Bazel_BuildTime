@@ -76,7 +76,7 @@ src/models.py                     from-scratch SGD linear regression, paper desi
 src/train.py                      runs all experiments, writes metrics.json + figures + model.joblib
 src/predict.py                    live demo CLI
 results/                          metrics.json, model.joblib, figures/
-docs/                             two-page write-up and slide deck, with their generators
+docs/                             two-page write-up (and its generator), slides, validation report
 ```
 
 ## Setup and run
@@ -88,13 +88,14 @@ pip install -r requirements.txt
 python src/train.py                                    # about 4-5 min, regenerates everything in results/
 ```
 
-To rebuild the write-up and slides from the results:
+To rebuild the write-up from the results:
 
 ```bash
-pip install reportlab pillow python-pptx
+pip install reportlab pillow
 python docs/make_writeup.py      # docs/writeup.pdf (2 pages)
-python docs/make_slides.py       # docs/slides.pptx
 ```
+
+The slide deck for the review is kept as a separate presentation (exported to `docs/slides.pdf`).
 
 Most of the training run time is the paired cross-validation (400 model fits). The processed data is
 committed, so no Bazel clone is needed to train or to run the demo from a dataset row or a file list.

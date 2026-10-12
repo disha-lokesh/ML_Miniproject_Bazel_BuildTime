@@ -61,7 +61,7 @@ figs0.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", 
 
 story = [
     P("Predicting Bazel Build Times with Machine Learning", h1),
-    P("UE24CS352A Machine Learning, Mini-Project &nbsp;|&nbsp; Team: Deepak &amp; Manaswin "
+    P("UE24CS352A Machine Learning, Mini-Project &nbsp;|&nbsp; Team: [Name] ([SRN]) &amp; [Name] ([SRN]) "
       "&nbsp;|&nbsp; PES University, Dept. of CSE (AI-ML)", sub),
     Spacer(1, 4),
 
@@ -208,6 +208,6 @@ story += [
 
 doc = SimpleDocTemplate(os.path.join(ROOT, "docs", "writeup.pdf"), pagesize=A4,
                         leftMargin=15 * mm, rightMargin=15 * mm, topMargin=13 * mm, bottomMargin=12 * mm,
-                        title="Predicting Bazel Build Times with ML: Write-up", author="Deepak, Manaswin")
+                        title="Predicting Bazel Build Times with ML: Write-up", author="")
 doc.build(story)
 print("ok")
