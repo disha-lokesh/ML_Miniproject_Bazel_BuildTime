@@ -196,6 +196,8 @@ def main():
                  "fallback_model": fallback, "fallback_columns": ENRICHED_COLS},
                 os.path.join(ROOT, "results", "model.joblib"))
     res["final_model_test"] = evaluate(y[TEST], np.exp(final.predict(Xp[TEST])))
+    # the same model on diff features only (the selection before E5 existed), for comparison
+    res["diff_only_model_test"] = evaluate(y[TEST], np.exp(fallback.predict(Xd[TEST])))
 
     # BEP sanity: CPU time is driven by how many actions Bazel re-executes
     res["bep_analysis"] = {
@@ -266,9 +268,10 @@ def make_figures(res, y, prev, bep, final, Xp, e1, feat_cols):
             ("Paper model (SGD + cross)", e1["with_cross"]["test"]["rmse_ms"], e1["with_cross"]["test"]["spearman"]),
             ("Ours, wrong alignment", res["E4_enriched_models"][f"{res['selected_model']}|paper_alignment"]["test"]["rmse_ms"],
              res["E4_enriched_models"][f"{res['selected_model']}|paper_alignment"]["test"]["spearman"]),
-            ("Ours, fixed alignment", res["final_model_test"]["rmse_ms"], res["final_model_test"]["spearman"])]
-    fig, ax = plt.subplots(figsize=(6, 3))
-    cols = [GRAY, GRAY, ORANGE, ORANGE, BLUE]
+            ("Ours, fixed alignment", res["diff_only_model_test"]["rmse_ms"], res["diff_only_model_test"]["spearman"]),
+            ("Ours, + size features (final)", res["final_model_test"]["rmse_ms"], res["final_model_test"]["spearman"])]
+    fig, ax = plt.subplots(figsize=(6, 3.3))
+    cols = [GRAY, GRAY, ORANGE, ORANGE, BLUE, BLUE]
     ax.barh(range(len(rows)), [r[1] for r in rows], color=cols, height=0.6)
     for i, r in enumerate(rows):
         lab = f"{r[1]:,.0f} ms" + (f"   ρ={r[2]:.2f}" if r[2] is not None else "")

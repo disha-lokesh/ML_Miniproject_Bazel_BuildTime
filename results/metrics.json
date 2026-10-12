@@ -628,6 +628,13 @@
     "spearman": 0.807,
     "auc_expensive": 0.834
   },
+  "diff_only_model_test": {
+    "rmse_ms": 4954.1,
+    "mae_ms": 2743.6,
+    "rmsle": 0.692,
+    "spearman": 0.817,
+    "auc_expensive": 0.853
+  },
   "bep_analysis": {
     "spearman_cpu_vs_actions_executed": 0.915,
     "builds_with_1_action": 149
