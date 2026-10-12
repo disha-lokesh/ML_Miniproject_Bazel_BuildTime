@@ -121,6 +121,20 @@ def load_dataset(root, align="previous"):
         feats.append(commit_features(files, r["lines_added"], r["lines_deleted"]))
     feats = pd.DataFrame(feats)
 
+    # size/dependency features and cost proxies, per commit (scripts/size_features.py,
+    # scripts/proxy_costs.py); log-scaled and aligned exactly like the diff features
+    size_path = os.path.join(root, "data/processed/size_features.csv")
+    if os.path.exists(size_path):
+        size = pd.read_csv(size_path)
+        for c in SIZE_STATS:
+            for which in ("before", "after"):
+                feats[f"log_{which}_{c}"] = np.log1p(size[f"{which}_{c}"].values)
+    proxy_path = os.path.join(root, "data/processed/proxy_costs.csv")
+    if os.path.exists(proxy_path):
+        proxy = pd.read_csv(proxy_path)
+        feats["log_proxy_cost_a"] = np.log(proxy["cost_a"].values)
+        feats["log_proxy_time_b"] = np.log(proxy["time_b"].values)
+
     if align == "previous":
         # row i <- diff of commit i-1; row 0 (cold build) has no previous diff
         feats = feats.shift(1).fillna(0)
@@ -135,3 +149,10 @@ def load_dataset(root, align="previous"):
 ENRICHED_COLS = ([f"area_{a}" for a in AREA_NAMES] + [f"type_{t}" for t in TYPE_NAMES]
                  + ["log_n_files", "log_lines_added", "log_lines_deleted",
                     "touches_build_files", "only_tests_or_docs", "touches_src_main"])
+
+# bytes and imports/#includes of the changed files (scripts/size_features.py).
+# "before" is the state build i actually compiles; "after" is kept for comparison.
+SIZE_STATS = ["sum_bytes", "max_bytes", "sum_deps", "max_deps",
+              "java_bytes", "java_deps", "cpp_bytes", "cpp_deps"]
+SIZE_COLS = {which: [f"log_{which}_{c}" for c in SIZE_STATS] for which in ("before", "after")}
+PROXY_COLS = ["log_proxy_cost_a", "log_proxy_time_b"]
